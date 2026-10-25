@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recetas de Cocina</title>
+
+    <style>
+        *{
+            margin:0;
+            padding:0;
+            box-sizing:border-box;
+            font-family:Arial, sans-serif;
+        }
+
+        body{
+            background:#f5f5f5;
+        }
+
+        header{
+            background:#ff6b35;
+            color:white;
+            text-align:center;
+            padding:20px;
+        }
+
+        .container{
+            max-width:1200px;
+            margin:auto;
+            padding:20px;
+        }
+
+        .formulario{
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            box-shadow:0 2px 10px rgba(0,0,0,.1);
+            margin-bottom:20px;
+        }
+
+        input,
+        textarea{
+            width:100%;
+            padding:12px;
+            margin-top:10px;
+            border:1px solid #ccc;
+            border-radius:5px;
+        }
+
+        button{
+            background:#ff6b35;
+            color:white;
+            border:none;
+            padding:12px 20px;
+            margin-top:15px;
+            border-radius:5px;
+            cursor:pointer;
+            transition:0.3s;
+        }
+
+        button:hover{
+            background:#e85a2a;
+        }
+
+        .btn-eliminar{
+            background:#dc3545;
+            margin-top:15px;
+        }
+
+        .btn-eliminar:hover{
+            background:#bb2d3b;
+        }
+
+        .recetas{
+            display:grid;
+            grid-template-columns:repeat(auto-fit,minmax(300px,1fr));
+            gap:20px;
+        }
+
+        .tarjeta{
+            background:white;
+            padding:20px;
+            border-radius:10px;
+            box-shadow:0 2px 10px rgba(0,0,0,.1);
+        }
+
+        .tarjeta h3{
+            color:#ff6b35;
+            margin-bottom:10px;
+        }
+
+        .tarjeta h4{
+            margin-top:10px;
+            margin-bottom:5px;
+        }
+
+        .tarjeta p{
+            line-height:1.5;
+            color:#555;
+            white-space:pre-line;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>🍴 Recetas de Cocina</h1>
+        <p>Agrega tus recetas favoritas</p>
+    </header>
+
+    <div class="container">
+
+        <div class="formulario">
+            <h2>Nueva Receta</h2>
+
+            <input
+                type="text"
+                id="titulo"
+                placeholder="Nombre de la receta"
+            >
+
+            <textarea
+                id="ingredientes"
+                rows="4"
+                placeholder="Ingredientes"
+            ></textarea>
+
+            <textarea
+                id="preparacion"
+                rows="5"
+                placeholder="Preparación"
+            ></textarea>
+
+            <button onclick="agregarReceta()">
+                Guardar Receta
+            </button>
+        </div>
+
+        <div class="recetas" id="listaRecetas"></div>
+
+    </div>
+
+    <script>
+        let recetas = [];
+
+        function agregarReceta(){
+
+            let titulo = document.getElementById("titulo").value.trim();
+            let ingredientes = document.getElementById("ingredientes").value.trim();
+            let preparacion = document.getElementById("preparacion").value.trim();
+
+            if(
+                titulo === "" ||
+                ingredientes === "" ||
+                preparacion === ""
+            ){
+                alert("Completa todos los campos");
+                return;
+            }
+
+            recetas.push({
+                titulo,
+                ingredientes,
+                preparacion
+            });
+
+            mostrarRecetas();
+
+            document.getElementById("titulo").value = "";
+            document.getElementById("ingredientes").value = "";
+            document.getElementById("preparacion").value = "";
+        }
+
+        function eliminarReceta(indice){
+            recetas.splice(indice, 1);
+            mostrarRecetas();
+        }
+
+        function mostrarRecetas(){
+
+            let contenedor = document.getElementById("listaRecetas");
+
+            contenedor.innerHTML = "";
+
+            recetas.forEach((receta, indice) => {
+
+                contenedor.innerHTML += `
+                    <div class="tarjeta">
+                        <h3>${receta.titulo}</h3>
+
+                        <h4>Ingredientes</h4>
+                        <p>${receta.ingredientes}</p>
+
+                        <h4>Preparación</h4>
+                        <p>${receta.preparacion}</p>
+
+                        <button
+                            class="btn-eliminar"
+                            onclick="eliminarReceta(${indice})"
+                        >
+                            Eliminar
+                        </button>
+                    </div>
+                `;
+            });
+        }
+    </script>
+
+</body>
+</html>
